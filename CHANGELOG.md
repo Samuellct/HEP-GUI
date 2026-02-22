@@ -7,13 +7,11 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [Unreleased]
-
----
-
 ## [0.1.0-alpha] - 2026-02-22
 
 ### Added
 - Initial project structure
 - Planning tests phase alpha
+- `requirements.txt`
+- `Phase_00_tests/` : config.py, T00_0_check_imports.py
 

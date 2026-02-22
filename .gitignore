@@ -1,6 +1,9 @@
 # project notes
 Rapports_md/
 Backup/
+Phase_00_tests/README.md
+CLAUDE_BASH_FIX.md
+.claude/
 
 # Python
 __pycache__/
