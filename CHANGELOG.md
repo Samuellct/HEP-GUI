@@ -9,6 +9,11 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+---
+
+## [0.1.0-alpha] - 2026-02-22
+
 ### Added
 - Initial project structure
-- Phase 00/01 test
+- Planning tests phase alpha
+
