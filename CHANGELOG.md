@@ -7,6 +7,15 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.2.0-alpha] - 2026-02-23
+
+### Added
+- Docker image 4.1.2
+- MG5 stable path
+- `DOCKER_SHELL` config for login shell requirement
+
+---
+
 ## [0.1.0-alpha] - 2026-02-22
 
 ### Added
