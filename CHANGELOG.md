@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.4.0-alpha] - 2026-02-23
+
+### Added
+- `T00_3_pyside6_thread.py` : test PySide6 QThread + signals
+
+---
+
 ## [0.3.0-alpha] - 2026-02-23
 
 ### Added
