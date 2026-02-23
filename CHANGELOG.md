@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.4.1-alpha] - 2026-02-23
+
+### Added
+- `T01_1_docker_streaming.py` : test streaming logs Docker dans PySide6
+
+---
+
 ## [0.4.0-alpha] - 2026-02-23
 
 ### Added
