@@ -7,6 +7,15 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.5.0-alpha] - 2026-02-23
+
+### Added
+- `test_ggH_100.txt` : script MG5 adapte pour test (100 events, paths Docker)
+- `HAHM_asymmetric_UFO` : modele UFO copie in data/models/
+- `T01_2_madgraph_run.py` : test run MG5+Pythia8 dans Docker
+
+---
+
 ## [0.4.1-alpha] - 2026-02-23
 
 ### Added

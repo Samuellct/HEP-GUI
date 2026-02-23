@@ -1,0 +1,50 @@
+set auto_update 0
+import model sm
+import model /data/models/HAHM_asymmetric_UFO
+define f = u c d s u~ c~ d~ s~ b b~ e+ e- mu+ mu- ta+ ta- t t~
+generate g g > h NP=99 HIG=99 QED=99 QCD=99, (h > 35 36, 35 > f f, 36 > f f)
+output /work/test_ggH_100
+launch /work/test_ggH_100
+shower=Pythia8
+0
+set nevents = 100
+set ms1 10
+set ms2 10
+set mh 125
+set ct1 1
+set ct2 1
+set Lambda 100
+set k 1
+set cl 1
+set time_of_flight 0
+set event_norm = sum
+set ebeam1 6800
+set ebeam2 6800
+set ptj = 0
+set ptb = 0
+set pta = 0
+set ptl = 0
+set iseed = 12346
+set etaj = -1
+set etab = -1
+set etaa = -1
+set etal = -1
+set drjj = 0
+set drbb = 0
+set drll = 0
+set draa = 0
+set drbj = 0
+set draj = 0
+set drjl = 0
+set drab = 0
+set drbl = 0
+set dral = 0
+set use_syst = T
+set wh = Auto
+set Ws1 = Auto
+set Ws2 = Auto
+set cut_decays = F
+set wh = 7.290534e-03
+set wt = Auto
+0
+exit

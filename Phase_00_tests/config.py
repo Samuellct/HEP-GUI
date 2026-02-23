@@ -19,3 +19,7 @@ MG5_BIN_401 = "/work/MG5_aMC_v3_5_5/bin/mg5_aMC" # 4.0.1 only (fallback)
 
 # container needs login shell to source /etc/profile.d/ (rivet, yoda, ROOT)
 DOCKER_SHELL = "bash -l -c"
+
+# MG5 bundles Pythia8 8.316 but container has system 8.315 in /usr/local/lib.
+# LD_PRELOAD needed to force the correct lib (ABI mismatch on Settings::mode).
+PYTHIA8_LIB = "/work/MG5_aMC/HEPTools/pythia8/lib"
