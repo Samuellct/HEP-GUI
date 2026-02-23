@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.3.0-alpha] - 2026-02-23
+
+### Added
+- `T00_2_docker_basics.py` : test docker-py connection
+
+---
+
 ## [0.2.0-alpha] - 2026-02-23
 
 ### Added
