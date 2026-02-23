@@ -12,9 +12,9 @@ import config
 
 YODA_FILE = config.ANALYSIS_DIR / "test_ggH_100.yoda"
 
-SUPPORTED_1D = {"ESTIMATE1D", "HISTO1D"}
+SUPPORTED_1D = {"ESTIMATE1D", "HISTO1D", "BINNEDESTIMATE", "BINNEDHISTO"}
 SUPPORTED_COUNTER = {"COUNTER"}
-SKIPPED_TYPES = {"ESTIMATE0D", "BINNEDESTIMATE", "BINNEDHISTO"}
+SKIPPED_TYPES = {"ESTIMATE0D"}
 
 
 @dataclass
@@ -74,8 +74,20 @@ def parse_yoda(filepath):
             raw_type = m.group(1)
             block_path = m.group(2).strip()
 
-            # strip angle-bracket suffixes for type matching (BINNEDESTIMATE<S> -> BINNEDESTIMATE)
-            base_type = raw_type.split("<")[0] if "<" in raw_type else raw_type
+            # strip angle-bracket suffixes for type matching (BINNEDESTIMATE<I> -> BINNEDESTIMATE)
+            sub_type = ""
+            if "<" in raw_type:
+                base_type, sub_type = raw_type.split("<")[0], raw_type.split("<")[1].rstrip(">")
+            else:
+                base_type = raw_type
+
+            # skip string-binned types (<S>) -- can't plot those
+            if sub_type.upper() == "S":
+                skipped_counts[raw_type] += 1
+                while line and not line.startswith("END "):
+                    line = f.readline()
+                line = f.readline()
+                continue
 
             if base_type in SKIPPED_TYPES:
                 skipped_counts[base_type] += 1
@@ -139,14 +151,18 @@ def parse_yoda(filepath):
                     line = f.readline()
                     continue
 
-                # prefer ESTIMATE1D (finalized) over HISTO1D (raw) when both share a path
+                # BINNEDESTIMATE = finalized (like ESTIMATE1D), BINNEDHISTO = raw (like HISTO1D)
+                is_estimate = base_type in ("ESTIMATE1D", "BINNEDESTIMATE")
+
+                # prefer finalized over raw when both share a path
                 existing = results.get(block_path)
                 if existing and isinstance(existing, YodaHisto1D):
-                    if existing.metadata.get("Type") == "ESTIMATE1D" and base_type == "HISTO1D":
+                    existing_is_estimate = existing.metadata.get("Type") in ("ESTIMATE1D", "BINNEDESTIMATE")
+                    if existing_is_estimate and not is_estimate:
                         line = f.readline()
                         continue
 
-                if base_type == "ESTIMATE1D":
+                if is_estimate:
                     values = np.array([r[0] for r in data_rows])
                     err_dn = np.array([r[1] if len(r) > 1 else float("nan") for r in data_rows])
                     err_up = np.array([r[2] if len(r) > 2 else float("nan") for r in data_rows])

@@ -7,6 +7,17 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.8.0-alpha] - 2026-02-23
+
+### Added
+- `test_ggH_100_30.txt` : second script MG5 (ms=30 GeV)
+- `T01_5_pyqtgraph_plots.py` : test PyQtGraph (step histos, log auto, normalisation, 38+ observables)
+
+### Changed
+- `T01_4_yoda_parser.py` : ajout support BINNEDESTIMATE<I> et BINNEDHISTO<I> (jet_multi_*, etc.)
+
+---
+
 ## [0.7.0-alpha] - 2026-02-23
 
 ### Added
