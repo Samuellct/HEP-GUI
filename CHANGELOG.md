@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.6.0-alpha] - 2026-02-23
+
+### Added
+- `T01_3_rivet_run.py` : test Rivet analysis + rivet-mkhtml
+
+---
+
 ## [0.5.0-alpha] - 2026-02-23
 
 ### Added
