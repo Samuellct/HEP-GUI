@@ -6,6 +6,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
+## [1.0.0-alpha] - 2026-02-23
+
+### Added
+- `T01_6_poc_app.py` : mini full POC
+- Phase 01 (tests composants) completed
+
+---
 
 ## [0.8.0-alpha] - 2026-02-23
 
