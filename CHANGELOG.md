@@ -7,7 +7,19 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.6.0-beta] - 2026-02-24
+## [0.7.0-beta]
+
+### Added
+- `core/yoda_parser.py` : YODA parser perso v3
+- `utils/normalization.py` : unit area normalization
+- `utils/plot_helpers.py` : step coords, auto log scale, view range, axis labels
+
+### Changed
+- `config/constants.py` : added AXIS_LABELS lookup table
+
+---
+
+## [0.6.0-beta]
 
 ### Added
 - `gui/generate_tab.py` : Generation tab (MG5+Pythia8 Docker run)
