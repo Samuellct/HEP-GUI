@@ -7,6 +7,16 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.4.0-beta] - 2026-02-24
+
+### Added
+- `gui/main_window.py` : fenetre principale
+
+### Changed
+- `main.py` : utilise MainWindow au lieu du QMainWindow
+
+---
+
 ## [0.3.0-beta] - 2026-02-24
 
 ### Added

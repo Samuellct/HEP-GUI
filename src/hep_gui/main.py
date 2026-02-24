@@ -1,15 +1,19 @@
 import sys
+from pathlib import Path
 
-from PySide6.QtWidgets import QApplication, QMainWindow
+# src/ in the path for dev
+_src = str(Path(__file__).resolve().parent.parent)
+if _src not in sys.path:
+    sys.path.insert(0, _src)
 
-from hep_gui.config.constants import APP_NAME, APP_VERSION
+from PySide6.QtWidgets import QApplication
+
+from hep_gui.gui.main_window import MainWindow
 
 
 def main():
     app = QApplication(sys.argv)
-    window = QMainWindow()
-    window.setWindowTitle(f"{APP_NAME} v{APP_VERSION}")
-    window.resize(1200, 800)
+    window = MainWindow()
     window.show()
     sys.exit(app.exec())
 
