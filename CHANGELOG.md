@@ -6,6 +6,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
+
+## [0.1.0-beta] - 2026-02-24
+
+### Added
+- `src/hep_gui/` : structure projet (config/, core/, gui/, utils/, models/)
+- `config/constants.py` : constantes centralisées
+- `config/settings.py` : lecture/ecriture settings.json avec valeurs par defaut
+- `main.py` : QMainWindow
+
+---
+
 ## [1.0.0-alpha] - 2026-02-23
 
 ### Added
