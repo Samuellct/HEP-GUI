@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.3.0-beta] - 2026-02-24
+
+### Added
+- `gui/log_panel.py` : panneau de logs
+
+---
+
 ## [0.2.0-beta] - 2026-02-24
 
 ### Added
