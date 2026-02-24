@@ -32,6 +32,16 @@ PYTHIA8_LIB = "/work/MG5_aMC/HEPTools/pythia8/lib"
 
 # YODA files don't contain axis labels -- these come from Rivet .plot files
 # prefix match on histogram path -> (xlabel, ylabel)
+# palette for multi-dataset overlay (line = opaque RGB, fill = semi-transparent RGBA)
+COLORS = [
+    {"line": (31, 119, 180), "fill": (31, 119, 180, 60)},   # blue
+    {"line": (255, 127, 14), "fill": (255, 127, 14, 60)},   # orange
+    {"line": (44, 160, 44),  "fill": (44, 160, 44, 60)},    # green
+    {"line": (214, 39, 40),  "fill": (214, 39, 40, 60)},    # red
+    {"line": (148, 103, 189), "fill": (148, 103, 189, 60)},  # purple
+    {"line": (140, 86, 75),  "fill": (140, 86, 75, 60)},    # brown
+]
+
 AXIS_LABELS = {
     "/MC_JETS/jet_HT":     ("HT [GeV]", "dsigma/dHT [pb/GeV]"),
     "/MC_JETS/jet_eta_":   ("eta", "dsigma/deta [pb]"),

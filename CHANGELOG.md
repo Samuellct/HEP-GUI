@@ -7,6 +7,17 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.8.0-beta]
+
+### Added
+- `gui/plot_tab.py` : onglet Plots
+
+### Changed
+- `gui/main_window.py` : replacement placeholder Plots by PlotTab
+- `config/constants.py` : added COLORS palette for multi-dataset overlay
+
+---
+
 ## [0.7.0-beta]
 
 ### Added

@@ -8,6 +8,7 @@ from hep_gui.config.constants import APP_NAME, APP_VERSION, DOCKER_IMAGE
 from hep_gui.core.docker_interface import check_docker, check_image, get_docker_client
 from hep_gui.gui.script_tab import ScriptTab
 from hep_gui.gui.generate_tab import GenerateTab
+from hep_gui.gui.plot_tab import PlotTab
 
 
 class MainWindow(QMainWindow):
@@ -29,7 +30,7 @@ class MainWindow(QMainWindow):
         self.tab_script = ScriptTab()
         self.tab_generate = GenerateTab(self.tab_script)
         self.tab_analysis = QWidget()
-        self.tab_plots = QWidget()
+        self.tab_plots = PlotTab()
 
         self.tabs.addTab(self.tab_script, "Script")
         self.tabs.addTab(self.tab_generate, "Generation")
