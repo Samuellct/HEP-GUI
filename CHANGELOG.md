@@ -7,6 +7,18 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.9.0-beta]
+
+### Added
+- `gui/analysis_tab.py` : onglet Analysis
+- `core/rivet_build.py` : utilitaires commande Rivet et rivet-build
+
+### Changed
+- `gui/main_window.py` : remplacement placeholder Analysis par AnalysisTab
+- `config/constants.py` : ajout RIVET_ANALYSES (3 tiers, 24 analyses MC_*)
+
+---
+
 ## [0.8.0-beta]
 
 ### Added

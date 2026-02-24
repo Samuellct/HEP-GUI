@@ -42,6 +42,20 @@ COLORS = [
     {"line": (140, 86, 75),  "fill": (140, 86, 75, 60)},    # brown
 ]
 
+RIVET_ANALYSES = {
+    "Tier 1 (general)": [
+        "MC_XS", "MC_JETS", "MC_MET", "MC_FSPARTICLES", "MC_SUSY",
+    ],
+    "Tier 2 (channel)": [
+        "MC_ELECTRONS", "MC_MUONS", "MC_TAUS", "MC_DILEPTON",
+        "MC_DIPHOTON", "MC_HINC", "MC_HJETS", "MC_JETTAGS", "MC_HFJETS",
+    ],
+    "Tier 3 (specific)": [
+        "MC_TTBAR", "MC_WINC", "MC_WJETS", "MC_ZINC", "MC_ZJETS",
+        "MC_VH2BB", "MC_HHJETS", "MC_KTSPLITTINGS", "MC_PHOTONINC", "MC_PHOTONS",
+    ],
+}
+
 AXIS_LABELS = {
     "/MC_JETS/jet_HT":     ("HT [GeV]", "dsigma/dHT [pb/GeV]"),
     "/MC_JETS/jet_eta_":   ("eta", "dsigma/deta [pb]"),
