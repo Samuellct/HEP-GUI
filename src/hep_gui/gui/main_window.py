@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, QUrl
 from hep_gui.config.constants import APP_NAME, APP_VERSION, DOCKER_IMAGE
 from hep_gui.core.docker_interface import check_docker, check_image, get_docker_client
 from hep_gui.gui.script_tab import ScriptTab
+from hep_gui.gui.generate_tab import GenerateTab
 
 
 class MainWindow(QMainWindow):
@@ -26,7 +27,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.tabs)
 
         self.tab_script = ScriptTab()
-        self.tab_generate = QWidget()
+        self.tab_generate = GenerateTab(self.tab_script)
         self.tab_analysis = QWidget()
         self.tab_plots = QWidget()
 

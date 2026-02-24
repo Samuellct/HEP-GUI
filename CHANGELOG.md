@@ -7,6 +7,16 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.6.0-beta] - 2026-02-24
+
+### Added
+- `gui/generate_tab.py` : Generation tab (MG5+Pythia8 Docker run)
+
+### Changed
+- `gui/main_window.py` : replacement placeholder Generation by GenerateTab
+
+---
+
 ## [0.5.0-beta] - 2026-02-24
 
 ### Added

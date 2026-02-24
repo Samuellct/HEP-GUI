@@ -7,7 +7,7 @@ output /work/test_ggH_100
 launch /work/test_ggH_100
 shower=Pythia8
 0
-set nevents = 100
+set nevents = 105
 set ms1 10
 set ms2 10
 set mh 125
