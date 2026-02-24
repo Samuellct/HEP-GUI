@@ -7,6 +7,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.2.0-beta] - 2026-02-24
+
+### Added
+- `core/docker_interface.py` : DockerWorker, PullWorker, check_docker, check_image
+
+---
+
 ## [0.1.0-beta] - 2026-02-24
 
 ### Added
