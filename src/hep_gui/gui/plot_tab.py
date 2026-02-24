@@ -6,10 +6,10 @@ from pyqtgraph import exporters
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QComboBox,
     QCheckBox, QLineEdit, QLabel, QFileDialog, QDialog, QTextEdit,
+    QMessageBox,
 )
-from PySide6.QtCore import Qt, Slot, QUrl
+from PySide6.QtCore import Qt, Slot, QUrl, QMarginsF
 from PySide6.QtGui import QPainter, QPageLayout, QPageSize, QFont, QDesktopServices
-from PySide6.QtCore import QMarginsF
 
 from hep_gui.config.constants import ANALYSIS_DIR, DATA_DIR, COLORS, DOCKER_IMAGE_MKHTML
 from hep_gui.core.docker_interface import get_docker_client, check_docker, check_image, DockerWorker
@@ -367,17 +367,24 @@ class PlotTab(QWidget):
 
     def _on_export_html(self):
         if not self._datasets:
+            QMessageBox.warning(self, "Export HTML", "No YODA files loaded.")
             return
 
         ok, info = check_docker()
         if not ok:
+            QMessageBox.warning(self, "Export HTML",
+                f"Docker is not running.\n{info}")
             return
 
         client = get_docker_client()
         if not client:
+            QMessageBox.warning(self, "Export HTML", "Cannot connect to Docker.")
             return
 
         if not check_image(client, DOCKER_IMAGE_MKHTML):
+            QMessageBox.warning(self, "Export HTML",
+                f"Image {DOCKER_IMAGE_MKHTML} not found.\n"
+                f"Pull it manually:\n  docker pull {DOCKER_IMAGE_MKHTML}")
             return
 
         # collect docker paths for all loaded .yoda files
@@ -389,6 +396,8 @@ class PlotTab(QWidget):
                 pass
 
         if not yoda_docker_paths:
+            QMessageBox.warning(self, "Export HTML",
+                "No loaded YODA files are inside the data/ directory.")
             return
 
         # output dir name

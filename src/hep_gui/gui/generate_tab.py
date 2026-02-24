@@ -13,6 +13,7 @@ from hep_gui.config.constants import (
 )
 from hep_gui.core.docker_interface import (
     get_docker_client, check_docker, check_image, DockerWorker,
+    PullWorker, diagnose_docker_error,
 )
 from hep_gui.gui.log_panel import LogPanel
 
@@ -25,6 +26,7 @@ class GenerateTab(QWidget):
         super().__init__(parent)
         self._script_tab = script_tab
         self._worker = None
+        self._pull_worker = None
         self._run_name = None
         self._temp_script = None
 
@@ -107,7 +109,12 @@ class GenerateTab(QWidget):
             return
 
         if not check_image(client, DOCKER_IMAGE):
-            self.log_panel.append_line(f"ERROR: image {DOCKER_IMAGE} not found locally")
+            self.log_panel.append_line(f"Image {DOCKER_IMAGE} not found, pulling...")
+            self._pull_worker = PullWorker(client, DOCKER_IMAGE)
+            self._pull_worker.progress.connect(self.log_panel.append_line)
+            self._pull_worker.finished.connect(self._on_pull_finished)
+            self._pull_worker.start()
+            self._set_state_running()
             return
 
         run_name = _extract_run_name(text)
@@ -168,10 +175,19 @@ class GenerateTab(QWidget):
         self._set_state_finished(success)
         self._worker = None
 
+    @Slot(bool)
+    def _on_pull_finished(self, success):
+        self._pull_worker = None
+        if success:
+            self.log_panel.append_line("--- Image pulled. Click Run again. ---")
+        else:
+            self.log_panel.append_line("ERROR: image pull failed")
+        self._set_state_finished(success)
+
     @Slot(str)
     def _on_error(self, msg):
         self._cleanup_temp()
-        self.log_panel.append_line(f"ERROR: {msg}")
+        self.log_panel.append_line(f"ERROR: {diagnose_docker_error(msg)}")
         self._set_state_finished(False)
         self._worker = None
 

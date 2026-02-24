@@ -1,5 +1,5 @@
 class WorkflowEngine:
-    """Connects tabs together: Generation -> Analysis -> Plots."""
+    """Connects tabs together: Generation to Analysis to Plots."""
 
     def __init__(self, tabs, gen_tab, analysis_tab, plot_tab):
         self._tabs = tabs

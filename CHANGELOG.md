@@ -7,6 +7,21 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.11.0-beta]
+
+### Added
+- Auto-pull Docker image in GenerateTab and AnalysisTab when it is missing
+- `diagnose_docker_error()` to handle silent failures
+
+### Changed
+- `core/docker_interface.py` : PullWorker handles tags without ":"
+- `gui/generate_tab.py` : auto-pull + diagnostics in error handler
+- `gui/analysis_tab.py` : auto-pull + diagnostics in error handler
+- `gui/plot_tab.py` : merged QMarginsF import, QMessageBox for all Docker errors
+- `config/constants.py` : version bump to 0.11.0-beta
+
+---
+
 ## [0.10.0-beta]
 
 ### Added

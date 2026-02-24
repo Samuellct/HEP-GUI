@@ -81,7 +81,10 @@ class PullWorker(QThread):
 
     def run(self):
         try:
-            repo, tag = self.tag.rsplit(":", 1)
+            if ":" in self.tag:
+                repo, tag = self.tag.rsplit(":", 1)
+            else:
+                repo, tag = self.tag, "latest"
             for chunk in self.client.api.pull(repo, tag=tag, stream=True, decode=True):
                 status = chunk.get("status", "")
                 prog = chunk.get("progress", "")
@@ -93,3 +96,17 @@ class PullWorker(QThread):
         except docker.errors.DockerException as e:
             self.progress.emit(f"ERROR: {e}")
             self.finished.emit(False)
+
+
+def diagnose_docker_error(error_msg):
+    """Add user-friendly context to Docker error messages."""
+    low = error_msg.lower()
+    if "no space left" in low:
+        return f"{error_msg}\n  -> Disk full. Run 'docker system prune' to free space."
+    if "timeout" in low or "timed out" in low:
+        return f"{error_msg}\n  -> Docker daemon may be overloaded or unresponsive."
+    if "connection refused" in low or "not running" in low:
+        return f"{error_msg}\n  -> Is Docker Desktop running?"
+    if "permission denied" in low:
+        return f"{error_msg}\n  -> Check Docker permissions."
+    return error_msg

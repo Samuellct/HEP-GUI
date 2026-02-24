@@ -11,7 +11,7 @@ ANALYSIS_DIR = DATA_DIR / "analysis"
 SETTINGS_FILE = ROOT / "settings.json"
 
 APP_NAME    = "HEP-GUI"
-APP_VERSION = "0.1.0-beta"
+APP_VERSION = "0.11.0-beta"
 
 DOCKER_IMAGE          = "hepstore/rivet-tutorial:4.1.2"
 DOCKER_IMAGE_FALLBACK = "hepstore/rivet-tutorial:4.0.1"
