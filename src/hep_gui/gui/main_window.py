@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt, QUrl
 
 from hep_gui.config.constants import APP_NAME, APP_VERSION, DOCKER_IMAGE
 from hep_gui.core.docker_interface import check_docker, check_image, get_docker_client
+from hep_gui.gui.script_tab import ScriptTab
 
 
 class MainWindow(QMainWindow):
@@ -24,7 +25,7 @@ class MainWindow(QMainWindow):
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
 
-        self.tab_script = QWidget()
+        self.tab_script = ScriptTab()
         self.tab_generate = QWidget()
         self.tab_analysis = QWidget()
         self.tab_plots = QWidget()
@@ -44,6 +45,9 @@ class MainWindow(QMainWindow):
 
         self.action_save = QAction("Save script", self)
         file_menu.addAction(self.action_save)
+
+        self.action_open.triggered.connect(self.tab_script.open_script)
+        self.action_save.triggered.connect(self.tab_script.save_script)
 
         file_menu.addSeparator()
 
