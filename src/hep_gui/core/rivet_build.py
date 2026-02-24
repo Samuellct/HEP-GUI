@@ -26,9 +26,15 @@ def build_rivetbuild_command(cc_filename):
     )
 
 
-def hepmc_to_docker_path(hepmc_local_path):
+def build_mkhtml_command(yoda_docker_paths, output_dir):
+    """Build the rivet-mkhtml Docker command string."""
+    files = " ".join(yoda_docker_paths)
+    return f'{DOCKER_SHELL} "rivet-mkhtml {files} -o {output_dir}"'
+
+
+def local_to_docker_path(local_path):
     """Convert a Windows path under data/ to a Docker /data/ path."""
-    local = Path(hepmc_local_path).resolve()
+    local = Path(local_path).resolve()
     data = DATA_DIR.resolve()
     rel = local.relative_to(data)
     return str(PurePosixPath("/data") / rel.as_posix())

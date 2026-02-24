@@ -5,7 +5,7 @@ from pathlib import Path
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
 )
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Signal
 
 from hep_gui.config.constants import (
     DATA_DIR, SCRIPTS_DIR, RUNS_DIR,
@@ -18,6 +18,8 @@ from hep_gui.gui.log_panel import LogPanel
 
 
 class GenerateTab(QWidget):
+
+    run_succeeded = Signal(str)  # emitted with .hepmc path on success
 
     def __init__(self, script_tab, parent=None):
         super().__init__(parent)
@@ -156,6 +158,10 @@ class GenerateTab(QWidget):
         if success:
             out_dir = RUNS_DIR / self._run_name / "Events"
             self.log_panel.append_line(f"--- HepMC files at: {out_dir} ---")
+            # find the first .hepmc file for the workflow
+            hepmc_files = list(out_dir.rglob("*.hepmc*"))
+            if hepmc_files:
+                self.run_succeeded.emit(str(hepmc_files[0]))
         else:
             self.log_panel.append_line(f"--- Run failed (exit code {exit_code}), no output files ---")
 

@@ -7,6 +7,21 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.10.0-beta]
+
+### Added
+- `core/workflow_engine.py` : pipeline orchestration (Generation -> Analysis -> Plots)
+- Export HTML button in PlotTab : rivet-mkhtml via Docker 4.0.2
+
+### Changed
+- `gui/generate_tab.py` : added `run_succeeded` signal emitting .hepmc path
+- `gui/analysis_tab.py` : added `run_succeeded` signal emitting .yoda path
+- `gui/plot_tab.py` : added Export HTML button and MkHtmlDialog
+- `gui/main_window.py` : instantiate WorkflowEngine for tab-to-tab data flow
+- `core/rivet_build.py` : renamed `hepmc_to_docker_path` to `local_to_docker_path`, added `build_mkhtml_command`
+
+---
+
 ## [0.9.0-beta]
 
 ### Added

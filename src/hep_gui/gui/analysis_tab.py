@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QLineEdit, QFileDialog, QMenu,
 )
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, Signal
 
 from hep_gui.config.constants import (
     DATA_DIR, RUNS_DIR, ANALYSIS_DIR,
@@ -16,12 +16,14 @@ from hep_gui.core.docker_interface import (
 )
 from hep_gui.core.rivet_build import (
     build_rivet_command, build_rivetbuild_command,
-    hepmc_to_docker_path, yoda_output_name,
+    local_to_docker_path, yoda_output_name,
 )
 from hep_gui.gui.log_panel import LogPanel
 
 
 class AnalysisTab(QWidget):
+
+    run_succeeded = Signal(str)  # emitted with .yoda path on success
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -172,7 +174,7 @@ class AnalysisTab(QWidget):
             return
 
         analyses = [a.strip() for a in analyses_text.split(",") if a.strip()]
-        docker_hepmc = hepmc_to_docker_path(self._hepmc_path)
+        docker_hepmc = local_to_docker_path(self._hepmc_path)
         yoda_name = yoda_output_name(self._hepmc_path)
         yoda_docker = f"/data/analysis/{yoda_name}"
 
@@ -249,6 +251,7 @@ class AnalysisTab(QWidget):
 
         if success:
             self.log_panel.append_line(f"--- Rivet finished, output: {self._yoda_path} ---")
+            self.run_succeeded.emit(str(self._yoda_path))
         else:
             self.log_panel.append_line(f"--- Rivet failed (exit code {exit_code}) ---")
 

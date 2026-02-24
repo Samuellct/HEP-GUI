@@ -5,13 +5,15 @@ import pyqtgraph as pg
 from pyqtgraph import exporters
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QComboBox,
-    QCheckBox, QLineEdit, QLabel, QFileDialog,
+    QCheckBox, QLineEdit, QLabel, QFileDialog, QDialog, QTextEdit,
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPainter, QPageLayout, QPageSize
+from PySide6.QtCore import Qt, Slot, QUrl
+from PySide6.QtGui import QPainter, QPageLayout, QPageSize, QFont, QDesktopServices
 from PySide6.QtCore import QMarginsF
 
-from hep_gui.config.constants import ANALYSIS_DIR, COLORS
+from hep_gui.config.constants import ANALYSIS_DIR, DATA_DIR, COLORS, DOCKER_IMAGE_MKHTML
+from hep_gui.core.docker_interface import get_docker_client, check_docker, check_image, DockerWorker
+from hep_gui.core.rivet_build import build_mkhtml_command, local_to_docker_path
 from hep_gui.core.yoda_parser import parse_yoda, filter_plottable, YodaHisto1D
 from hep_gui.utils.normalization import normalize_to_area
 from hep_gui.utils.plot_helpers import (
@@ -94,9 +96,12 @@ class PlotTab(QWidget):
         self.btn_png = QPushButton("PNG")
         self.btn_svg = QPushButton("SVG")
         self.btn_pdf = QPushButton("PDF")
+        self.btn_html = QPushButton("Export HTML")
+        self.btn_html.setToolTip("Generate publication-quality HTML via rivet-mkhtml (Docker)")
         bottom.addWidget(self.btn_png)
         bottom.addWidget(self.btn_svg)
         bottom.addWidget(self.btn_pdf)
+        bottom.addWidget(self.btn_html)
 
         layout.addLayout(bottom)
 
@@ -113,6 +118,7 @@ class PlotTab(QWidget):
         self.btn_png.clicked.connect(lambda: self._export("png"))
         self.btn_svg.clicked.connect(lambda: self._export("svg"))
         self.btn_pdf.clicked.connect(lambda: self._export("pdf"))
+        self.btn_html.clicked.connect(self._on_export_html)
 
     # -- public API --
 
@@ -358,3 +364,108 @@ class PlotTab(QWidget):
         painter = QPainter(writer)
         self.plot_widget.render(painter)
         painter.end()
+
+    def _on_export_html(self):
+        if not self._datasets:
+            return
+
+        ok, info = check_docker()
+        if not ok:
+            return
+
+        client = get_docker_client()
+        if not client:
+            return
+
+        if not check_image(client, DOCKER_IMAGE_MKHTML):
+            return
+
+        # collect docker paths for all loaded .yoda files
+        yoda_docker_paths = []
+        for ds in self._datasets.values():
+            try:
+                yoda_docker_paths.append(local_to_docker_path(ds["path"]))
+            except ValueError:
+                pass
+
+        if not yoda_docker_paths:
+            return
+
+        # output dir name
+        if len(yoda_docker_paths) == 1:
+            stem = Path(yoda_docker_paths[0]).stem
+            out_dir = f"/data/analysis/{stem}_plots"
+            local_dir = ANALYSIS_DIR / f"{stem}_plots"
+        else:
+            out_dir = "/data/analysis/comparison_plots"
+            local_dir = ANALYSIS_DIR / "comparison_plots"
+
+        cmd = build_mkhtml_command(yoda_docker_paths, out_dir)
+        dlg = MkHtmlDialog(self, client, cmd, local_dir)
+        dlg.exec()
+
+
+class MkHtmlDialog(QDialog):
+
+    def __init__(self, parent, client, cmd, output_dir):
+        super().__init__(parent)
+        self.setWindowTitle("rivet-mkhtml")
+        self.resize(600, 400)
+        self._output_dir = output_dir
+        self._worker = None
+
+        layout = QVBoxLayout(self)
+
+        self._log = QTextEdit()
+        self._log.setReadOnly(True)
+        self._log.setFont(QFont("Consolas", 9))
+        layout.addWidget(self._log)
+
+        btn_row = QHBoxLayout()
+        self._btn_cancel = QPushButton("Cancel")
+        self._btn_cancel.clicked.connect(self._on_cancel)
+        btn_row.addStretch()
+        btn_row.addWidget(self._btn_cancel)
+        self._btn_open = QPushButton("Open result")
+        self._btn_open.setEnabled(False)
+        self._btn_open.clicked.connect(self._on_open)
+        btn_row.addWidget(self._btn_open)
+        layout.addLayout(btn_row)
+
+        # start the worker
+        volumes = {str(DATA_DIR): {"bind": "/data", "mode": "rw"}}
+        self._log.append("--- Running rivet-mkhtml ---")
+
+        self._worker = DockerWorker(client, DOCKER_IMAGE_MKHTML, cmd, volumes=volumes)
+        self._worker.log_line.connect(self._log.append)
+        self._worker.finished.connect(self._on_finished)
+        self._worker.error.connect(self._on_error)
+        self._worker.start()
+
+    @Slot(int)
+    def _on_finished(self, exit_code):
+        self._worker = None
+        self._btn_cancel.setEnabled(False)
+        if exit_code == 0 and self._output_dir.exists():
+            self._log.append(f"--- Done, output: {self._output_dir} ---")
+            self._btn_open.setEnabled(True)
+        else:
+            self._log.append(f"--- rivet-mkhtml failed (exit code {exit_code}) ---")
+
+    @Slot(str)
+    def _on_error(self, msg):
+        self._worker = None
+        self._btn_cancel.setEnabled(False)
+        self._log.append(f"ERROR: {msg}")
+
+    def _on_cancel(self):
+        if self._worker:
+            self._worker.stop_container()
+            self._log.append("--- Cancelled ---")
+
+    def _on_open(self):
+        index = self._output_dir / "index.html"
+        if index.exists():
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(index)))
+        else:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(self._output_dir)))

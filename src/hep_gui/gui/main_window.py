@@ -10,6 +10,7 @@ from hep_gui.gui.script_tab import ScriptTab
 from hep_gui.gui.generate_tab import GenerateTab
 from hep_gui.gui.analysis_tab import AnalysisTab
 from hep_gui.gui.plot_tab import PlotTab
+from hep_gui.core.workflow_engine import WorkflowEngine
 
 
 class MainWindow(QMainWindow):
@@ -37,6 +38,10 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.tab_generate, "Generation")
         self.tabs.addTab(self.tab_analysis, "Analysis")
         self.tabs.addTab(self.tab_plots, "Plots")
+
+        self._workflow = WorkflowEngine(
+            self.tabs, self.tab_generate, self.tab_analysis, self.tab_plots,
+        )
 
     def _build_menu(self):
         menu_bar = self.menuBar()

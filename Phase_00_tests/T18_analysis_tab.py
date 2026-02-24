@@ -13,7 +13,7 @@ app = QApplication.instance() or QApplication(sys.argv)
 from hep_gui.gui.analysis_tab import AnalysisTab
 from hep_gui.core.rivet_build import (
     build_rivet_command, build_rivetbuild_command,
-    hepmc_to_docker_path, yoda_output_name,
+    local_to_docker_path, yoda_output_name,
 )
 from hep_gui.config.constants import RIVET_ANALYSES, DATA_DIR
 
@@ -75,11 +75,11 @@ def test_build_rivetbuild_command():
     print(f"    cmd = {cmd}")
 
 
-def test_hepmc_to_docker_path():
+def test_local_to_docker_path():
     local = str(DATA_DIR / "runs" / "test_ggH" / "Events" / "run_01" / "file.hepmc.gz")
-    docker_path = hepmc_to_docker_path(local)
+    docker_path = local_to_docker_path(local)
     assert docker_path == "/data/runs/test_ggH/Events/run_01/file.hepmc.gz"
-    print("OK  hepmc_to_docker_path")
+    print("OK  local_to_docker_path")
     print(f"    {local} -> {docker_path}")
 
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     test_set_hepmc_path()
     test_build_rivet_command()
     test_build_rivetbuild_command()
-    test_hepmc_to_docker_path()
+    test_local_to_docker_path()
     test_yoda_output_name()
     test_presets_menu()
     print("\nAll T18 tests passed.")
