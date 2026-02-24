@@ -88,7 +88,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 - `T01_5_pyqtgraph_plots.py` : test PyQtGraph (step histos, log auto, normalisation, 38+ observables)
 
 ### Changed
-- `T01_4_yoda_parser.py` : ajout support BINNEDESTIMATE<I> et BINNEDHISTO<I> (jet_multi_*, etc.)
+- `T01_4_yoda_parser.py` : ajout support BINNEDESTIMATE et BINNEDHISTO (jet_multi_*, etc.)
 
 ---
 
