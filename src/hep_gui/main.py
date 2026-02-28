@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
 
-# src/ in the path for dev
-_src = str(Path(__file__).resolve().parent.parent)
-if _src not in sys.path:
-    sys.path.insert(0, _src)
+# src/ in the path for dev (not needed when frozen by PyInstaller)
+if not getattr(sys, 'frozen', False):
+    _src = str(Path(__file__).resolve().parent.parent)
+    if _src not in sys.path:
+        sys.path.insert(0, _src)
 
 from PySide6.QtWidgets import QApplication
 

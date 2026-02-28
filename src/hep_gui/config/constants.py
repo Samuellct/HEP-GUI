@@ -1,6 +1,11 @@
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent.parent.parent
+if getattr(sys, 'frozen', False):
+    # PyInstaller one-dir: exe sits next to data/
+    ROOT = Path(sys.executable).resolve().parent
+else:
+    ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 DATA_DIR     = ROOT / "data"
 MODELS_DIR   = DATA_DIR / "models"
@@ -11,7 +16,7 @@ ANALYSIS_DIR = DATA_DIR / "analysis"
 SETTINGS_FILE = ROOT / "settings.json"
 
 APP_NAME    = "HEP-GUI"
-APP_VERSION = "0.11.0-beta"
+APP_VERSION = "1.0.0-beta"
 
 DOCKER_IMAGE          = "hepstore/rivet-tutorial:4.1.2"
 DOCKER_IMAGE_FALLBACK = "hepstore/rivet-tutorial:4.0.1"

@@ -106,7 +106,7 @@ def test_plot_tab_export_html_feedback():
 
 def test_version():
     from hep_gui.config.constants import APP_VERSION
-    assert APP_VERSION == "0.11.0-beta", f"expected 0.11.0-beta, got {APP_VERSION}"
+    assert APP_VERSION == "1.0.0-beta", f"expected 1.0.0-beta, got {APP_VERSION}"
     print(f"OK  APP_VERSION = {APP_VERSION}")
 
 

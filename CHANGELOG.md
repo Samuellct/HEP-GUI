@@ -7,6 +7,22 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.0-beta]
+
+### Added
+- `hep_gui.spec` : PyInstaller spec file (one-dir, Windows, no console)
+- `scripts/build.bat` : build script for .exe
+
+### Changed
+- `config/constants.py` : frozen-aware ROOT path, version bump to 1.0.0-beta
+- `main.py` : sys.path hack guarded behind frozen check
+
+### Notes
+- Output: `dist/hep-gui/` (160 MB), requires `data/` copied alongside
+- Prerequisite: Docker Desktop installed
+
+---
+
 ## [0.11.0-beta]
 
 ### Added
